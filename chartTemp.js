@@ -62,7 +62,7 @@ function drawChart() {
 }
 exports.drawChart = drawChart
 
-function updateChart(xData, yData) {
+function updateChart(xData, yData, animationTime) {
 
     datas.push({
 
@@ -86,17 +86,17 @@ function updateChart(xData, yData) {
 
     // Make the changes
     svg.select(".path")   // change the line
-        .duration(750)
+        .duration(animationTime)
         .attr("d", line);
 
 
     svg.select(".x.axis") // change the x axis
-        .duration(750)
+        .duration(animationTime)
         .call(d3.axisBottom(x))
 
 
     svg.select(".y.axis") // change the y axis
-        .duration(750)
+        .duration(animationTime)
         .call(d3.axisLeft(y))
 
 
