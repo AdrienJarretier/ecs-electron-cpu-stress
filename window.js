@@ -19,6 +19,13 @@ function handleTemp(tempSensors) {
 
         }
 
+        if (sensor.Name == "CPU Package") {
+
+
+            chartTemp.updateChart(1, sensor.Value)
+
+        }
+
         $('#field').append('<br>')
 
     }
@@ -30,6 +37,8 @@ function handleTemp(tempSensors) {
 // wmiTemp.getTemperatures(handleTemp);
 
 $(() => {
+
+    chartTemp.drawChart()
 
     wmiTemp.getTemperatures(handleTemp);
 
