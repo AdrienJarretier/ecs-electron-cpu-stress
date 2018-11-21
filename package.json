@@ -1,0 +1,17 @@
+{
+  "name": "oc-bench",
+  "version": "0.1.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-wmi": "0.0.5"
+  },
+  "devDependencies": {
+    "electron": "^3.0.10"
+  }
+}
