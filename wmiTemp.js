@@ -1,24 +1,43 @@
 'use strict'
 
-var wmi = require('node-wmi');
+var wmi = require('node-wmi')
 
-function getTemperatures() {
+function wmiTemperaturesQuery() {
+
+    return new Promise(resolve => {
+
+        wmi.Query({
+            class: 'Sensor',
+            namespace: 'root\\OpenHardwareMonitor'
+        }, function (err, temperature_infos) {
+
+            let sensors = []
+
+            for (let sensor of temperature_infos) {
+                // console.log(sensor.SensorType)
+                if (sensor.SensorType == 'Temperature') {
+
+                    sensors.push(sensor)
+                    // console.log(sensor)
+                    // console.log(sensor.Name + ' : ' + sensor.Value)
+                }
+            }
+
+            resolve(sensors)
+
+        })
 
 
+    })
 
 }
 
-wmi.Query({
-    class: 'Sensor',
-    namespace: 'root\\OpenHardwareMonitor'
-}, function (err, temperature_infos) {
+async function getTemperatures(handleTemprature) {
 
-    for (let sensor of temperature_infos) {
-        // console.log(sensor.SensorType)
-        if (sensor.SensorType == 'Temperature') {
-            console.log(sensor)
-            // console.log(sensor.Name + ' : ' + sensor.Value)
-        }
-    }
+    let temp = await wmiTemperaturesQuery()
 
-});
+    return handleTemprature(temp)
+
+}
+
+exports.getTemperatures = getTemperatures
