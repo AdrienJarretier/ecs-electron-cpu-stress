@@ -1,6 +1,7 @@
 'use strict'
 
 const wmiTemp = require('./wmiTemp.js')
+const chartTemp = require('./chartTemp.js')
 
 function handleTemp(tempSensors) {
 
