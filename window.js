@@ -15,25 +15,23 @@ function handleTemp(tempSensors) {
 
     for (let sensor of tempSensors) {
 
-        // for (let k in sensor) {
+        for (let k in sensor) {
 
-        //     let v = sensor[k]
+            let v = sensor[k]
 
-        //     $('#field').append(k + ' : ' + v + '<br>')
+            $('#field').append(k + ' : ' + v + '<br>')
 
-        // }
+        }
 
-        if (sensor.Name == "CPU Package") {
+        if (sensor.Name == "CPU Core #1") {
 
             let elapsedTime = Date.now() - timeStart
 
             chartTemp.updateChart(elapsedTime / 1000, sensor.Value, SAMPLE_PERIOD)
 
-            break;
-
         }
 
-        // $('#field').append('<br>')
+        $('#field').append('<br>')
 
     }
 

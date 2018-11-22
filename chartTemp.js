@@ -14,6 +14,11 @@ for (let i = -TIME_WINDOW; i < 0; ++i) {
     })
 }
 
+var line = d3.line()
+    .x(function (d) { return x(d.date) })
+    .y(function (d) { return y(d.value) })
+    .curve(d3.curveCatmullRom.alpha(0.5));
+
 function drawChart() {
 
     var svgWidth = 600,
@@ -36,12 +41,9 @@ function drawChart() {
 
     y = d3.scaleLinear().rangeRound([height, 0]);
 
-    var line = d3.line()
-        .x(function (d) { return x(d.date) })
-        .y(function (d) { return y(d.value) })
 
     x.domain(d3.extent(datas, function (d) { return d.date }));
-    y.domain([20,80]);
+    y.domain([20, 80]);
 
     g.append("g")
         .attr("class", "axis x")
@@ -75,7 +77,9 @@ exports.drawChart = drawChart
 
 function updateChart(xData, yData, animationTime) {
 
-    datas.shift()
+    let maxX = d3.max(datas, function (d) { return d.date })
+    let minX = maxX - TIME_WINDOW
+
 
     datas.push({
 
@@ -84,16 +88,11 @@ function updateChart(xData, yData, animationTime) {
 
     })
 
-
-    x.domain(d3.extent(datas, function (d) { return d.date }));
+    x.domain([minX, maxX]);
 
     // Select the section we want to apply our changes to
     var svg = d3.select("svg").transition();
 
-
-    var line = d3.line()
-        .x(function (d) { return x(d.date) })
-        .y(function (d) { return y(d.value) })
 
 
     // Make the changes

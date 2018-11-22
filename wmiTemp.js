@@ -14,12 +14,11 @@ function wmiTemperaturesQuery() {
             let sensors = []
 
             for (let sensor of temperature_infos) {
-                // console.log(sensor.SensorType)
+
                 if (sensor.SensorType == 'Temperature') {
 
                     sensors.push(sensor)
-                    // console.log(sensor)
-                    // console.log(sensor.Name + ' : ' + sensor.Value)
+
                 }
             }
 
