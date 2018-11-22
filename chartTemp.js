@@ -3,6 +3,17 @@ var y
 
 let datas = []
 
+TIME_WINDOW = 30
+
+for (let i = -TIME_WINDOW; i < 0; ++i) {
+    datas.push({
+
+        date: i,
+        value: 30
+
+    })
+}
+
 function drawChart() {
 
     var svgWidth = 600,
@@ -21,7 +32,7 @@ function drawChart() {
             "translate(" + margin.left + "," + margin.top + ")"
         );
 
-    x = d3.scaleTime().rangeRound([0, width]);
+    x = d3.scaleLinear().rangeRound([0, width]);
 
     y = d3.scaleLinear().rangeRound([height, 0]);
 
@@ -30,7 +41,7 @@ function drawChart() {
         .y(function (d) { return y(d.value) })
 
     x.domain(d3.extent(datas, function (d) { return d.date }));
-    y.domain(d3.extent(datas, function (d) { return d.value }));
+    y.domain([20,80]);
 
     g.append("g")
         .attr("class", "axis x")
@@ -64,6 +75,8 @@ exports.drawChart = drawChart
 
 function updateChart(xData, yData, animationTime) {
 
+    datas.shift()
+
     datas.push({
 
         date: xData,
@@ -73,7 +86,6 @@ function updateChart(xData, yData, animationTime) {
 
 
     x.domain(d3.extent(datas, function (d) { return d.date }));
-    y.domain(d3.extent(datas, function (d) { return d.value }));
 
     // Select the section we want to apply our changes to
     var svg = d3.select("svg").transition();
@@ -86,17 +98,17 @@ function updateChart(xData, yData, animationTime) {
 
     // Make the changes
     svg.select(".path")   // change the line
-        .duration(animationTime)
+        // .duration(animationTime)
         .attr("d", line);
 
 
     svg.select(".x.axis") // change the x axis
-        .duration(animationTime)
+        // .duration(animationTime)
         .call(d3.axisBottom(x))
 
 
     svg.select(".y.axis") // change the y axis
-        .duration(animationTime)
+        // .duration(animationTime)
         .call(d3.axisLeft(y))
 
 

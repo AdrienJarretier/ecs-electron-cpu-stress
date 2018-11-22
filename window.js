@@ -3,10 +3,9 @@
 const wmiTemp = require('./wmiTemp.js')
 const chartTemp = require('./chartTemp.js')
 
-let timeStart = 0
-let currentTime = 0
+let timeStart = Date.now()
 
-const SAMPLE_PERIOD = 400
+const SAMPLE_PERIOD = 1000
 
 function handleTemp(tempSensors) {
 
@@ -16,26 +15,35 @@ function handleTemp(tempSensors) {
 
     for (let sensor of tempSensors) {
 
-        for (let k in sensor) {
+        // for (let k in sensor) {
 
-            let v = sensor[k]
+        //     let v = sensor[k]
 
-            $('#field').append(k + ' : ' + v + '<br>')
+        //     $('#field').append(k + ' : ' + v + '<br>')
 
-        }
+        // }
 
         if (sensor.Name == "CPU Package") {
 
+            let elapsedTime = Date.now() - timeStart
 
-            chartTemp.updateChart(currentTime - timeStart, sensor.Value, SAMPLE_PERIOD / 2)
+            chartTemp.updateChart(elapsedTime / 1000, sensor.Value, SAMPLE_PERIOD)
 
-            ++currentTime
+            break;
 
         }
 
-        $('#field').append('<br>')
+        // $('#field').append('<br>')
 
     }
+
+
+
+    setTimeout(() => {
+
+        wmiTemp.getTemperatures(handleTemp);
+
+    }, SAMPLE_PERIOD);
 
 
 }
@@ -46,7 +54,7 @@ $(() => {
 
     chartTemp.drawChart()
 
-    setInterval(() => {
+    setTimeout(() => {
 
         wmiTemp.getTemperatures(handleTemp);
 
