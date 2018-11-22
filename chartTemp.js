@@ -3,9 +3,9 @@ var y
 
 let datas = []
 
-TIME_WINDOW = 30
+TIME_WINDOW = 300
 
-for (let i = -TIME_WINDOW; i < 0; ++i) {
+for (let i = -TIME_WINDOW; i <= 0; ++i) {
     datas.push({
 
         date: i,
@@ -42,7 +42,11 @@ function drawChart() {
     y = d3.scaleLinear().rangeRound([height, 0]);
 
 
-    x.domain(d3.extent(datas, function (d) { return d.date }));
+
+    let maxX = d3.max(datas, function (d) { return d.date })
+    let minX = maxX - TIME_WINDOW
+    x.domain([minX, maxX]);
+
     y.domain([20, 80]);
 
     g.append("g")
@@ -77,8 +81,6 @@ exports.drawChart = drawChart
 
 function updateChart(xData, yData, animationTime) {
 
-    let maxX = d3.max(datas, function (d) { return d.date })
-    let minX = maxX - TIME_WINDOW
 
 
     datas.push({
@@ -88,7 +90,10 @@ function updateChart(xData, yData, animationTime) {
 
     })
 
+    let maxX = d3.max(datas, function (d) { return d.date })
+    let minX = maxX - TIME_WINDOW
     x.domain([minX, maxX]);
+
 
     // Select the section we want to apply our changes to
     var svg = d3.select("svg").transition();
@@ -106,9 +111,9 @@ function updateChart(xData, yData, animationTime) {
         .call(d3.axisBottom(x))
 
 
-    svg.select(".y.axis") // change the y axis
-        // .duration(animationTime)
-        .call(d3.axisLeft(y))
+    // svg.select(".y.axis") // change the y axis
+    //     // .duration(animationTime)
+    //     .call(d3.axisLeft(y))
 
 
 
