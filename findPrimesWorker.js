@@ -50,7 +50,7 @@ onmessage = function (e) {
 
         if (isPrime) {
             ++piX;
-            console.log(myThreadId + ' : ' + currentInt);
+            // console.log(myThreadId + ' : ' + currentInt);
         }
 
         currentInt -= 2 * nbOfWorkers;
