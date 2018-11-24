@@ -13,6 +13,7 @@ let timeStart = Date.now()
 let lastUpdate
 
 let maxTemp = 0;
+let lastMaxTempUpdate = Date.now();
 
 function handleTemp(tempSensors) {
 
@@ -38,7 +39,13 @@ function handleTemp(tempSensors) {
 
             // elapsedTime = lastUpdate - timeStart
 
-            maxTemp = Math.max(sensor.Value, maxTemp);
+            if (sensor.Value > maxTemp) {
+
+                maxTemp = sensor.Value;
+                lastMaxTempUpdate = Date.now();
+                $('#max-temp').text(maxTemp);
+
+            }
 
             chartTemp.updateChart(elapsedTime / SAMPLE_PERIOD, sensor.Value, maxTemp);
 
@@ -62,17 +69,27 @@ function handleTemp(tempSensors) {
 
 }
 
+function updateMaxTempTime() {
+
+    $('#max-temp-time-update').text((Date.now() - lastMaxTempUpdate) / 1000);
+
+    setTimeout(() => {
+
+        updateMaxTempTime();
+
+    }, 100);
+
+}
+
 
 
 $(() => {
 
     chartTemp.drawChart(TIME_WINDOW);
 
-    setTimeout(() => {
+    wmiTemp.getTemperatures(handleTemp);
 
-        wmiTemp.getTemperatures(handleTemp);
-
-    }, SAMPLE_PERIOD);
+    updateMaxTempTime();
 
     findPrimes.startWorkers();
 

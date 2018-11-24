@@ -27,12 +27,12 @@ function drawChart(timeWindow) {
     line = d3.line()
         .x(function (d) { return x(d.date) })
         .y(function (d) { return y(d.value) })
-        .curve(d3.curveCatmullRom.alpha(0.5));
+        .curve(d3.curveBasis);
 
     lineMaxTemp = d3.line()
         .x(function (d) { return x(d.date) })
         .y(function (d) { return y(d.valueMax) })
-        .curve(d3.curveCatmullRom.alpha(0.5));
+        .curve(d3.curveBasis);
 
     var svgWidth = 600,
         svgHeight = 400;
