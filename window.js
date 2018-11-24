@@ -103,5 +103,10 @@ $(() => {
 
     findPrimes.startWorkers();
 
+    $('#cool-down-button').click(() => {
+
+        console.log('ccocuou');
+
+    });
 
 })
