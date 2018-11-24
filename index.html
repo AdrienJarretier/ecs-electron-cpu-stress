@@ -10,6 +10,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/d3js/5.7.0/d3.min.js"></script>
     <script src="./window.js"></script>
+
+    <style>
+        table {
+
+            border-collapse: collapse;
+            border: 2px solid rgb(200, 200, 200);
+        }
+
+
+        td,
+        th {
+            border: 1px solid rgb(190, 190, 190);
+            padding: 5px 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,6 +32,22 @@
 
     <p>
         Max Temp : <span id="max-temp"></span> ( <span id="max-temp-time-update"></span> s )
+    </p>
+
+    <p>
+        <h3>Max temp updates :</h3>
+
+        <table id="max-temp-updates-history">
+
+            <thead>
+                <tr>
+                    <th>Last update time (s)</th>
+                    <th>Max temperature (°C)</th>
+                </tr>
+            </thead>
+
+        </table>
+
     </p>
 </body>
 

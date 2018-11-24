@@ -43,7 +43,17 @@ function handleTemp(tempSensors) {
 
                 maxTemp = sensor.Value;
                 lastMaxTempUpdate = Date.now();
+
                 $('#max-temp').text(maxTemp);
+
+                let cellTime = $('<td>').text(((lastMaxTempUpdate - timeStart) / 1000));
+                let cellTemp = $('<td>').text(maxTemp);
+
+                let row = $('<tr>');
+                row.append(cellTime);
+                row.append(cellTemp);
+
+                $('#max-temp-updates-history').append(row);
 
             }
 
