@@ -60,7 +60,7 @@ function handleTemp(tempSensors) {
 
 $(() => {
 
-    chartTemp.drawChart()
+    chartTemp.drawChart(30)
 
     setTimeout(() => {
 

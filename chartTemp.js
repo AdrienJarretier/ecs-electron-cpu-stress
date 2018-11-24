@@ -1,25 +1,31 @@
+'use strict';
+
 var x
 var y
 
-let datas = []
+var datas = []
 
-TIME_WINDOW = 300
+var TIME_WINDOW;
 
-for (let i = -TIME_WINDOW; i <= 0; ++i) {
-    datas.push({
+var line;
 
-        date: i,
-        value: 30
+function drawChart(timeWindow) {
 
-    })
-}
+    TIME_WINDOW = timeWindow;
 
-var line = d3.line()
-    .x(function (d) { return x(d.date) })
-    .y(function (d) { return y(d.value) })
-    .curve(d3.curveCatmullRom.alpha(0.5));
+    for (let i = -TIME_WINDOW; i <= 0; ++i) {
+        datas.push({
 
-function drawChart() {
+            date: i,
+            value: 30
+
+        })
+    }
+
+    line = d3.line()
+        .x(function (d) { return x(d.date) })
+        .y(function (d) { return y(d.value) })
+        .curve(d3.curveCatmullRom.alpha(0.5));
 
     var svgWidth = 600,
         svgHeight = 400;
