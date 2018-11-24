@@ -105,7 +105,7 @@ $(() => {
 
     $('#cool-down-button').click(() => {
 
-        console.log('ccocuou');
+        findPrimes.stopWorkers();
 
     });
 

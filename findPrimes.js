@@ -1,5 +1,7 @@
 'use strict';
 
+let workers = [];
+
 function startWorkers() {
 
     let nbCores = navigator.hardwareConcurrency;
@@ -8,11 +10,29 @@ function startWorkers() {
 
     let nbOfWorkers = nbCores;
 
-    for (let i = 0; i < nbOfWorkers; ++i) {
+    while (workers.length < nbOfWorkers) {
 
         let myWorker = new Worker('findPrimesWorker.js');
-        myWorker.postMessage([nbOfWorkers, i]);
+
+        workers.push(myWorker);
+
+    }
+
+    for (let i = 0; i < nbOfWorkers; ++i) {
+
+        workers[i].postMessage([nbOfWorkers, i]);
     }
 
 }
 exports.startWorkers = startWorkers;
+
+function stopWorkers() {
+
+    for (let w of workers) {
+
+        w.postMessage('stop');
+
+    }
+
+}
+exports.stopWorkers = stopWorkers;
