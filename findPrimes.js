@@ -1,12 +1,17 @@
 'use strict';
 
-console.log('nb cores :' + navigator.hardwareConcurrency);
+function startWorkers() {
 
-let nbCores = 1;
+    console.log('nb cores :' + navigator.hardwareConcurrency);
+
+    let nbCores = 3;
 
 
-for (let i = 0; i < nbCores; ++i) {
+    for (let i = 0; i < nbCores; ++i) {
 
-    let myWorker = new Worker('findPrimesWorker.js');
-    myWorker.postMessage([nbCores, i]);
+        let myWorker = new Worker('findPrimesWorker.js');
+        myWorker.postMessage([nbCores, i]);
+    }
+
 }
+exports.startWorkers = startWorkers;

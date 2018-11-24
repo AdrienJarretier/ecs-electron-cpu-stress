@@ -2,6 +2,7 @@
 
 const wmiTemp = require('./wmiTemp.js')
 const chartTemp = require('./chartTemp.js')
+const findPrimes = require('./findPrimes.js');
 
 const SAMPLE_PERIOD = 1000
 
@@ -66,6 +67,8 @@ $(() => {
         wmiTemp.getTemperatures(handleTemp);
 
     }, SAMPLE_PERIOD);
+
+    findPrimes.startWorkers();
 
 
 })
