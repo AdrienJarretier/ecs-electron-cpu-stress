@@ -2,15 +2,16 @@
 
 function startWorkers() {
 
-    console.log('nb cores :' + navigator.hardwareConcurrency);
+    let nbCores = navigator.hardwareConcurrency;
 
-    let nbCores = 3;
+    console.log('nb cores :' + nbCores);
 
+    let nbOfWorkers = nbCores - 1;
 
-    for (let i = 0; i < nbCores; ++i) {
+    for (let i = 0; i < nbOfWorkers; ++i) {
 
         let myWorker = new Worker('findPrimesWorker.js');
-        myWorker.postMessage([nbCores, i]);
+        myWorker.postMessage([nbOfWorkers, i]);
     }
 
 }
