@@ -1,6 +1,9 @@
 'use strict';
 
-let nbCores = navigator.hardwareConcurrency - 1;
+console.log('nb cores :' + navigator.hardwareConcurrency);
+
+let nbCores = 1;
+
 
 for (let i = 0; i < nbCores; ++i) {
 
