@@ -8,6 +8,7 @@ var datas = []
 var TIME_WINDOW;
 
 var line;
+var lineMaxTemp;
 
 function drawChart(timeWindow) {
 
@@ -17,7 +18,8 @@ function drawChart(timeWindow) {
         datas.push({
 
             date: i,
-            value: 30
+            value: 30,
+            valueMax: 30
 
         })
     }
@@ -25,6 +27,11 @@ function drawChart(timeWindow) {
     line = d3.line()
         .x(function (d) { return x(d.date) })
         .y(function (d) { return y(d.value) })
+        .curve(d3.curveCatmullRom.alpha(0.5));
+
+    lineMaxTemp = d3.line()
+        .x(function (d) { return x(d.date) })
+        .y(function (d) { return y(d.valueMax) })
         .curve(d3.curveCatmullRom.alpha(0.5));
 
     var svgWidth = 600,
@@ -76,23 +83,34 @@ function drawChart(timeWindow) {
         .attr("class", "path")
         .datum(datas)
         .attr("fill", "none")
-        .attr("stroke", "crimson")
+        .attr("stroke", "green")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 1.5)
         .attr("d", line);
 
+    g.append("path")
+        .attr("class", "pathMaxTemp")
+        .datum(datas)
+        .attr("fill", "none")
+        .attr("stroke", "crimson")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
+        .attr("stroke-width", 1.5)
+        .attr("d", lineMaxTemp);
+
 }
 exports.drawChart = drawChart
 
-function updateChart(xData, yData, animationTime) {
+function updateChart(xData, yData, yMaxTemp) {
 
 
 
     datas.push({
 
         date: xData,
-        value: yData
+        value: yData,
+        valueMax: yMaxTemp
 
     })
 
@@ -110,6 +128,10 @@ function updateChart(xData, yData, animationTime) {
     svg.select(".path")   // change the line
         // .duration(animationTime)
         .attr("d", line);
+
+    svg.select(".pathMaxTemp")   // change the line
+        // .duration(animationTime)
+        .attr("d", lineMaxTemp);
 
 
     svg.select(".x.axis") // change the x axis

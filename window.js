@@ -4,11 +4,15 @@ const wmiTemp = require('./wmiTemp.js')
 const chartTemp = require('./chartTemp.js')
 const findPrimes = require('./findPrimes.js');
 
+const TIME_WINDOW = 300;
+
 const SAMPLE_PERIOD = 1000
 
 let timeStart = Date.now()
 // let expectedUpdate = Date.now() + SAMPLE_PERIOD
 let lastUpdate
+
+let maxTemp = 0;
 
 function handleTemp(tempSensors) {
 
@@ -34,7 +38,9 @@ function handleTemp(tempSensors) {
 
             // elapsedTime = lastUpdate - timeStart
 
-            chartTemp.updateChart(elapsedTime / SAMPLE_PERIOD, sensor.Value, SAMPLE_PERIOD)
+            maxTemp = Math.max(sensor.Value, maxTemp);
+
+            chartTemp.updateChart(elapsedTime / SAMPLE_PERIOD, sensor.Value, maxTemp);
 
         }
 
@@ -60,7 +66,7 @@ function handleTemp(tempSensors) {
 
 $(() => {
 
-    chartTemp.drawChart(30)
+    chartTemp.drawChart(TIME_WINDOW);
 
     setTimeout(() => {
 
