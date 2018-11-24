@@ -6,7 +6,7 @@ function startWorkers() {
 
     console.log('nb cores :' + nbCores);
 
-    let nbOfWorkers = nbCores - 1;
+    let nbOfWorkers = nbCores;
 
     for (let i = 0; i < nbOfWorkers; ++i) {
 
