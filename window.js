@@ -101,7 +101,11 @@ $(() => {
 
     updateMaxTempTime();
 
-    findPrimes.startWorkers();
+    $('#heat-up-button').click(() => {
+
+        findPrimes.startWorkers();
+
+    });
 
     $('#cool-down-button').click(() => {
 

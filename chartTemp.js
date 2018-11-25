@@ -35,7 +35,7 @@ function drawChart(timeWindow) {
         .curve(d3.curveBasis);
 
     var svgWidth = 600,
-        svgHeight = 400;
+        svgHeight = 300;
     var margin = { top: 20, right: 20, bottom: 30, left: 50 };
     var width = svgWidth - margin.left - margin.right;
     var height = svgHeight - margin.top - margin.bottom;
@@ -60,7 +60,7 @@ function drawChart(timeWindow) {
     let minX = maxX - TIME_WINDOW
     x.domain([minX, maxX]);
 
-    y.domain([20, 80]);
+    y.domain([25, 85]);
 
     g.append("g")
         .attr("class", "axis x")

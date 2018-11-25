@@ -31,9 +31,9 @@ exports.startWorkers = startWorkers;
 
 function stopWorkers() {
 
-    for (let w of workers) {
+    while (workers.length > 0) {
 
-        w.terminate();
+        workers.pop().terminate();
 
     }
 
