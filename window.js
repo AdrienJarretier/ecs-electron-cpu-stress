@@ -15,59 +15,45 @@ let lastUpdate
 let maxTemp = 0;
 let lastMaxTempUpdate = Date.now();
 
+function parseSensors(tempSensors) {
+
+    for (let sensor of tempSensors) {
+        if (sensor.Name == "CPU Package") {
+
+            let temperatureValue = sensor.Value;
+
+            return temperatureValue;
+
+        }
+    }
+
+}
+
 function handleTemp(tempSensors) {
 
-    // console.log(tempSensors)
-
-    // $('#field').empty()
+    let temperatureValue = parseSensors(tempSensors);
 
     let elapsedTime = Date.now() - timeStart
 
-    // lastUpdate = Date.now()
+    if (temperatureValue > maxTemp) {
 
-    for (let sensor of tempSensors) {
+        maxTemp = temperatureValue;
+        lastMaxTempUpdate = Date.now();
 
-        // for (let k in sensor) {
+        $('#max-temp').text(maxTemp);
 
-        //     let v = sensor[k]
+        let cellTime = $('<td>').text(((lastMaxTempUpdate - timeStart) / 1000));
+        let cellTemp = $('<td>').text(maxTemp);
 
-        //     $('#field').append(k + ' : ' + v + '<br>')
+        let row = $('<tr>');
+        row.append(cellTime);
+        row.append(cellTemp);
 
-        // }
-
-        if (sensor.Name == "CPU Package") {
-
-            // elapsedTime = lastUpdate - timeStart
-
-            if (sensor.Value > maxTemp) {
-
-                maxTemp = sensor.Value;
-                lastMaxTempUpdate = Date.now();
-
-                $('#max-temp').text(maxTemp);
-
-                let cellTime = $('<td>').text(((lastMaxTempUpdate - timeStart) / 1000));
-                let cellTemp = $('<td>').text(maxTemp);
-
-                let row = $('<tr>');
-                row.append(cellTime);
-                row.append(cellTemp);
-
-                $('#max-temp-updates-history').append(row);
-
-            }
-
-            chartTemp.updateChart(elapsedTime / SAMPLE_PERIOD, sensor.Value, maxTemp);
-
-        }
-
-        // $('#field').append('<br>')
+        $('#max-temp-updates-history').append(row);
 
     }
 
-    // let missingTime = lastUpdate - expectedUpdate
-
-    // expectedUpdate += SAMPLE_PERIOD
+    chartTemp.updateChart(elapsedTime / SAMPLE_PERIOD, temperatureValue, maxTemp);
 
     setTimeout(() => {
 
@@ -75,7 +61,6 @@ function handleTemp(tempSensors) {
         wmiTemp.getTemperatures(handleTemp);
 
     }, SAMPLE_PERIOD);
-
 
 }
 
@@ -91,28 +76,38 @@ function updateMaxTempTime() {
 
 }
 
+function initChart(tempSensors) {
+
+    let temperatureValue = parseSensors(tempSensors);
+
+    chartTemp.drawChart(TIME_WINDOW, temperatureValue);
+
+}
 
 
 $(() => {
 
-    chartTemp.drawChart(TIME_WINDOW);
+    wmiTemp.getTemperatures(initChart)
+        .then(() => {
 
-    wmiTemp.getTemperatures(handleTemp);
+            wmiTemp.getTemperatures(handleTemp);
 
-    updateMaxTempTime();
+            updateMaxTempTime();
 
-    findPrimes.startWorkers();
+            findPrimes.startWorkers();
 
-    $('#heat-up-button').click(() => {
+            $('#heat-up-button').click(() => {
 
-        findPrimes.startWorkers();
+                findPrimes.startWorkers();
 
-    });
+            });
 
-    $('#cool-down-button').click(() => {
+            $('#cool-down-button').click(() => {
 
-        findPrimes.stopWorkers();
+                findPrimes.stopWorkers();
 
-    });
+            });
+
+        });
 
 })

@@ -10,7 +10,7 @@ var TIME_WINDOW;
 var line;
 var lineMaxTemp;
 
-function drawChart(timeWindow) {
+function drawChart(timeWindow, initTemperature) {
 
     TIME_WINDOW = timeWindow;
 
@@ -18,8 +18,8 @@ function drawChart(timeWindow) {
         datas.push({
 
             date: i,
-            value: 30,
-            valueMax: 30
+            value: initTemperature,
+            valueMax: initTemperature
 
         })
     }
@@ -60,7 +60,7 @@ function drawChart(timeWindow) {
     let minX = maxX - TIME_WINDOW
     x.domain([minX, maxX]);
 
-    y.domain([25, 85]);
+    y.domain([Math.floor((initTemperature - 20) / 10) * 10, 85]);
 
     g.append("g")
         .attr("class", "axis x")
