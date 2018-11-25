@@ -20,7 +20,10 @@ function startWorkers() {
 
     for (let i = 0; i < nbOfWorkers; ++i) {
 
-        workers[i].postMessage([nbOfWorkers, i]);
+        workers[i].postMessage({
+            type: 'START_PARAMETERS',
+            values: [nbOfWorkers, i]
+        });
     }
 
 }
@@ -30,7 +33,7 @@ function stopWorkers() {
 
     for (let w of workers) {
 
-        w.postMessage('stop');
+        w.terminate();
 
     }
 

@@ -1,11 +1,8 @@
 'use strict';
 
-onmessage = function (e) {
+function start(nbOfWorkers, myThreadId) {
 
-    let coresInfos = e.data;
 
-    let nbOfWorkers = coresInfos[0];
-    let myThreadId = coresInfos[1];
     console.log('Message received from main script : ' + nbOfWorkers + ', ' + myThreadId);
 
 
@@ -63,4 +60,22 @@ onmessage = function (e) {
 
     }
 
+}
+
+
+onmessage = function (e) {
+
+    console.log('e.data.type : ' + e.data.type);
+
+    switch (e.data.type) {
+        case 'START_PARAMETERS':
+
+            let coresInfos = e.data.values;
+
+            let nbOfWorkers = coresInfos[0];
+            let myThreadId = coresInfos[1];
+
+            start(nbOfWorkers, myThreadId);
+            break;
+    }
 }
