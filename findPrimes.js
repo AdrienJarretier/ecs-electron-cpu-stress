@@ -39,7 +39,7 @@ function startWorkers() {
 
                         // add row to table
 
-                        let cellTime = $('<td>').text(((Date.now() - startTime) / 60000));
+                        let cellTime = $('<td>').text(Math.round((Date.now() - startTime) / 60000));
                         let cellValue = $('<td>').text(sumBenchmarkValues);
 
                         let row = $('<tr>');
