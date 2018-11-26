@@ -1,7 +1,10 @@
 'use strict';
 
-function start(nbOfWorkers, myThreadId) {
+function start(nbOfWorkers, myThreadId, startTime) {
 
+    const UPDATE_INTERVAL = 60000;
+
+    let nextUpdate = startTime + UPDATE_INTERVAL;
 
     console.log('Message received from main script : ' + nbOfWorkers + ', ' + myThreadId);
 
@@ -12,7 +15,7 @@ function start(nbOfWorkers, myThreadId) {
 
 
     let currentInt;
-    let piX = 0;
+    let piX;
 
     function initCurrentInt() {
 
@@ -22,6 +25,7 @@ function start(nbOfWorkers, myThreadId) {
     }
 
 
+    let benchValuePrimesFound = 0;
 
     initCurrentInt();
 
@@ -47,6 +51,7 @@ function start(nbOfWorkers, myThreadId) {
 
         if (isPrime) {
             ++piX;
+            ++benchValuePrimesFound;
             // console.log(myThreadId + ' : ' + currentInt);
         }
 
@@ -56,6 +61,20 @@ function start(nbOfWorkers, myThreadId) {
             // console.log('----------------')
             // console.log(piX);
             initCurrentInt();
+        }
+
+
+        if (Date.now() >= nextUpdate) {
+
+            console.log(Date.now() - startTime);
+
+            nextUpdate = nextUpdate + UPDATE_INTERVAL;
+
+            postMessage({
+                type: 'BENCHMARK_VALUE',
+                values: [benchValuePrimesFound]
+            });
+
         }
 
     }
@@ -74,8 +93,9 @@ onmessage = function (e) {
 
             let nbOfWorkers = coresInfos[0];
             let myThreadId = coresInfos[1];
+            let startTime = coresInfos[2];
 
-            start(nbOfWorkers, myThreadId);
+            start(nbOfWorkers, myThreadId, startTime);
             break;
     }
 }
