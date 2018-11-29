@@ -85,29 +85,34 @@ function initChart(tempSensors) {
 }
 
 
-$(() => {
+$(
 
-    wmiTemp.getTemperatures(initChart)
-        .then(() => {
+    setTimeout(_ => {
 
-            wmiTemp.getTemperatures(handleTemp);
+        wmiTemp.getTemperatures(initChart)
+            .then(() => {
 
-            updateMaxTempTime();
+                wmiTemp.getTemperatures(handleTemp);
 
-            findPrimes.startWorkers();
-
-            $('#heat-up-button').click(() => {
+                updateMaxTempTime();
 
                 findPrimes.startWorkers();
 
+                $('#heat-up-button').click(() => {
+
+                    findPrimes.startWorkers();
+
+                });
+
+                $('#cool-down-button').click(() => {
+
+                    findPrimes.stopWorkers();
+
+                });
+
             });
 
-            $('#cool-down-button').click(() => {
 
-                findPrimes.stopWorkers();
+    }, 2000);
 
-            });
-
-        });
-
-})
+);
