@@ -84,35 +84,88 @@ function initChart(tempSensors) {
 
 }
 
+function loadSpinning() {
 
-$(
+    function degToRad(degrees) {
+        return degrees * Math.PI / 180;
+    }
 
-    setTimeout(_ => {
+    // Returns a tween for a transition’s "d" attribute, transitioning any selected
+    // arcs from their current angle to the specified new angle.
+    function arcTween(newAngle, angle) {
+        return function (d) {
+            var interpolate = d3.interpolate(d[angle], newAngle);
+            return function (t) {
+                d[angle] = interpolate(t);
+                return arc(d);
+            };
+        };
+    }
 
-        wmiTemp.getTemperatures(initChart)
-            .then(() => {
+    const animationTime = 3000;
+    const loaderRadius = 64;
+    const loaderColor = '#ccc';
 
-                wmiTemp.getTemperatures(handleTemp);
+    var arc = d3.arc()
+        .innerRadius(loaderRadius - 16)
+        .outerRadius(loaderRadius);
 
-                updateMaxTempTime();
+    let svgWidth = 600,
+        svgHeight = 300;
 
-                findPrimes.startWorkers();
+    var svg = d3.select("svg")
+        .attr("width", svgWidth)
+        .attr("height", svgHeight);
 
-                $('#heat-up-button').click(() => {
+    let g = svg.append("g").attr("transform", "translate(" + svgWidth / 2 + "," + svgHeight / 2 + ")");
+
+    var loader = g.append("path")
+        .datum({ endAngle: 0, startAngle: 0 })
+        .style("fill", loaderColor)
+        .attr("d", arc);
+
+    loader.datum({ endAngle: 0, startAngle: 0 })
+
+    loader.transition()
+        .duration(animationTime)
+        .ease(d3.easeSinIn)
+        .attrTween("d", arcTween(degToRad(360), 'endAngle'))
+        .on("end", _ => {
+
+
+
+
+            wmiTemp.getTemperatures(initChart)
+                .then(() => {
+
+                    wmiTemp.getTemperatures(handleTemp);
+
+                    updateMaxTempTime();
 
                     findPrimes.startWorkers();
 
+                    $('#heat-up-button').click(() => {
+
+                        findPrimes.startWorkers();
+
+                    });
+
+                    $('#cool-down-button').click(() => {
+
+                        findPrimes.stopWorkers();
+
+                    });
+
                 });
 
-                $('#cool-down-button').click(() => {
-
-                    findPrimes.stopWorkers();
-
-                });
-
-            });
 
 
-    }, 3000)
 
-);
+        });
+
+
+
+}
+
+
+$(loadSpinning);
