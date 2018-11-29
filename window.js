@@ -104,7 +104,7 @@ function loadSpinning() {
 
     const animationTime = 3000;
     const loaderRadius = 64;
-    const loaderColor = '#ccc';
+    const loaderColor = 'rgb(100,100,100)';
 
     var arc = d3.arc()
         .innerRadius(loaderRadius - 16)
@@ -134,9 +134,18 @@ function loadSpinning() {
 
 
 
-
             wmiTemp.getTemperatures(initChart)
                 .then(() => {
+
+                    loader
+                    .attr("fill-opacity", 1)
+                    .attr("stroke-opacity", 1)
+                    .transition()
+                        .duration(1000)
+                        //change fill and stroke opacity to avoid CSS conflicts
+                        .attr("fill-opacity", 0)
+                        .attr("stroke-opacity", 0)
+                        .remove(); //remove after transitions are complete
 
                     wmiTemp.getTemperatures(handleTemp);
 
